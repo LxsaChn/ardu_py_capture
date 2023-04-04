@@ -4,6 +4,7 @@ import board
 import usb_cdc
 from Arducam import *
 from board import *
+import time
 
 
 mode = 0
@@ -260,5 +261,18 @@ while True:
             mode=0
             start_capture=0
 
-
-
+    #Reset fifo read pointer to zero
+    mycam.flush_fifo()
+    '''
+    Once a frame image is buffed to onboard memory, 
+    the capture completion flag is asserted automatically. 
+    The clear_fifo_flag function is used to clear this 
+    flag before issuing next capture command.
+    '''
+    mycam.clear_fifo_flag();
+    #Issue a capture command
+    mycam.start_capture()
+    if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
+            read_fifo_burst()
+    #Wait 10 seconds
+    time.sleep(10)
