@@ -45,12 +45,13 @@ def read_fifo_burst():
             break
 
 while True:   
-    mycam.flush_fifo()
-    mycam.clear_fifo_flag()
-    time.sleep(1)
+    if usb_cdc.data.in_waiting > 0:
+        mycam.flush_fifo()
+        mycam.clear_fifo_flag()
+        time.sleep(1)
 
-    mycam.start_capture()
-    read_fifo_burst()
-    mycam.clear_fifo_flag()
-    time.sleep(10)
+        mycam.start_capture()
+        read_fifo_burst()
+        mycam.clear_fifo_flag()
+        time.sleep(10)
 
