@@ -44,10 +44,11 @@ def read_fifo_burst():
             mycam.clear_fifo_flag()
             break
 
+mycam.OV5642_set_JPEG_size(OV5642_640x480)
+
 while True:   
     mycam.flush_fifo()
     mycam.clear_fifo_flag()
-    mycam.OV5642_set_JPEG_size(OV5642_640x480)
     time.sleep(1)
 
     mycam.start_capture()
