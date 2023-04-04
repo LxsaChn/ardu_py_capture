@@ -237,42 +237,20 @@ while True:
         elif value== 0xE3: 
             mycam.OV5642_Test_Pattern(DLI)
 
-    if mode==1:
-        if start_capture==1:
-            mycam.flush_fifo();
-            mycam.clear_fifo_flag();
-            mycam.start_capture();
-            start_capture=0
+    if flag_command == 0:
+        #Reset fifo read pointer to zero
+        mycam.flush_fifo()
+        '''
+        Once a frame image is buffed to onboard memory, 
+        the capture completion flag is asserted automatically. 
+        The clear_fifo_flag function is used to clear this 
+        flag before issuing next capture command.
+        '''
+        mycam.clear_fifo_flag();
+        #Issue a capture command
+        mycam.start_capture()
         if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
-            read_fifo_burst()
-            mode=0      
-
-    if mode==2:
-        if stop_flag==0:
-            if start_capture==2:
-                start_capture=0
-                mycam.flush_fifo();
-                mycam.clear_fifo_flag();
-                mycam.start_capture();
-            if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
                 read_fifo_burst()
-                start_capture=2
-        else:
-            mode=0
-            start_capture=0
-
-    #Reset fifo read pointer to zero
-    mycam.flush_fifo()
-    '''
-    Once a frame image is buffed to onboard memory, 
-    the capture completion flag is asserted automatically. 
-    The clear_fifo_flag function is used to clear this 
-    flag before issuing next capture command.
-    '''
-    mycam.clear_fifo_flag();
-    #Issue a capture command
-    mycam.start_capture()
-    if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
-            read_fifo_burst()
-    #Wait 10 seconds
-    time.sleep(10)
+        #Wait 10 seconds
+        time.sleep(10)
+    
