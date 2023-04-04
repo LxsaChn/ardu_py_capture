@@ -4,6 +4,7 @@ import board
 import usb_cdc
 from Arducam import *
 from board import *
+import time
 
 
 mode = 0
@@ -42,9 +43,9 @@ def read_fifo_burst():
             break
 
 while True:   
-    mycam.OV5642_set_JPEG_size(OV5642_2048x1536)
     mycam.flush_fifo()
     mycam.clear_fifo_flag()
     mycam.start_capture()
-    if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
-        read_fifo_burst()
+    read_fifo_burst()
+    time.sleep(10)
+
