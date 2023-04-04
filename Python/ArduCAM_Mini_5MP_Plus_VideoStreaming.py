@@ -24,7 +24,7 @@ mycam.Spi_write(ARDUCHIP_TIM,VSYNC_LEVEL_MASK)
 utime.sleep(1)
 mycam.clear_fifo_flag()
 mycam.Spi_write(ARDUCHIP_FRAMES,0x00)
-
+mycam.OV5642_set_JPEG_size(OV5642_640x480)
 
 def read_fifo_burst():
     count=0
@@ -43,8 +43,6 @@ def read_fifo_burst():
             mycam.SPI_CS_HIGH()
             mycam.clear_fifo_flag()
             break
-
-mycam.OV5642_set_JPEG_size(OV5642_640x480)
 
 while True:   
     mycam.flush_fifo()
