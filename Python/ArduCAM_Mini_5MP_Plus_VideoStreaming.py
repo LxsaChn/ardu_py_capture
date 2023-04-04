@@ -246,7 +246,7 @@ while True:
         The clear_fifo_flag function is used to clear this 
         flag before issuing next capture command.
         '''
-        mycam.clear_fifo_flag();
+        mycam.clear_fifo_flag()
         #Issue a capture command
         mycam.start_capture()
         if mycam.get_bit(ARDUCHIP_TRIG,CAP_DONE_MASK)!=0:
